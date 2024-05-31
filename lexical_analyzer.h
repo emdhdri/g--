@@ -3,6 +3,7 @@
 #include <vector>
 using namespace std;
 
+
 bool is_letter(char c){
     return (c > 64 && c < 91) || (c > 96 && c < 123) || c == '_'; 
 }
@@ -138,13 +139,13 @@ int is_string(string code, int start){
     return last_accept;
 }
 
-vector<pair<string, string>> lexical_analyze(string code){
+vector<pair<string, pair<string, string>>> lexical_analyze(string code){
     cout << code << endl;
     int start = 0;
-    vector<pair<string, string>> tokens;
+    vector<pair<string, pair<string, string>>> tokens;
     while(start < code.length()){
         int max_match = 0;
-        string token = "";
+        string token = "", exact_token_name = "";
         int rw_match = is_reserved_word(code, start);
         if(rw_match > max_match){
             max_match = rw_match;
@@ -175,19 +176,15 @@ vector<pair<string, string>> lexical_analyze(string code){
         }
         else{
             string token_value = code.substr(start, max_match);
-            tokens.push_back(make_pair(token, token_value));
-            
+            if(token == "reservedword" || token == "symbol"){
+                exact_token_name = token_value;
+            }
+            else{
+                exact_token_name = token;
+            }
+            tokens.push_back(make_pair(token, make_pair(token_value, exact_token_name)));            
             start += max_match;
         }
     }
     return tokens;
-}
-
-int main(){
-    string code;
-    code = "#include<iostream>\nusing namespace std;\nint main () {\n    int x;\n    int s=0, t=10;\n    while(t>=0){\n        cin>>x;\n    t = t-113134440\n    s = s + x\n    }\n    cout<<\"sum=\"<<s;\n    return 0;\n}";
-    for(auto x: lexical_analyze(code)){
-        cout << "<" << x.first << ", " << x.second << ">" << endl;
-    }
-    return 0;
 }
