@@ -9,35 +9,6 @@
 
 using namespace std;
 
-// GRAMMAR definition
-/*
-map<string, vector<vector<string>>> GRAMMAR = {
-    {"program", {{"include_stmt", "namespace_stmt", "main_func"}}},
-    {"include_stmt", {{"#include", "<", "identifier", ">"}}},
-    {"namespace_stmt", {{"using", "namespace", "std", ";"}}},
-    {"main_func", {{"int", "main", "(", ")", "{", "stmt_list", "}"}}},
-    {"type", {{"int"}, {"float"}, {"void"}}},
-    {"stmt_list", {{"stmt", "stmt_list"}, {""}}},
-    {"stmt", {{"var_decl", ";"}, {"assignment", ";"}, {"if_stmt"}, {"while_stmt"}, {"io_stmt", ";"}, {"return", "expr", ";"}, {"break", ";"}, {"continue", ";"}}},
-    {"var_decl", {{"type", "identifier", "var_decl_tail"}}},
-    {"var_decl_tail", {{"=", "expr"}, {""}}},
-    {"assignment", {{"identifier", "=", "expr"}}},
-    {"if_stmt", {{"if", "(", "bool_expr", ")", "{", "stmt_list", "}"}}},
-    {"while_stmt", {{"while", "(", "bool_expr", ")", "{", "stmt_list", "}"}}},
-    {"io_stmt", {{"cin", ">>", "identifier"}, {"cout", "<<", "expr"}}},
-    {"bool_expr", {{"bool_term", "bool_expr_tail"}}},
-    {"bool_expr_tail", {{"||", "bool_term", "bool_expr_tail"}, {""}}},
-    {"bool_term", {{"bool_factor", "bool_term_tail"}}},
-    {"bool_term_tail", {{"&&", "bool_factor", "bool_term_tail"}, {""}}},
-    {"bool_factor", {{"!", "bool_factor"}, {"(", "bool_expr", ")"}, {"expr", "relop", "expr"}}},
-    {"relop", {{"=="}, {"!="}, {"<"}, {"<="}, {">"}, {">="}}},
-    {"expr", {{"term", "expr_tail"}}},
-    {"expr_tail", {{"+", "term", "expr_tail"}, {"-", "term", "expr_tail"}, {""}}},
-    {"term", {{"factor", "term_tail"}}},
-    {"term_tail", {{"*", "factor", "term_tail"}, {"/", "factor", "term_tail"}, {""}}},
-    {"factor", {{"number"}, {"identifier"}, {"string"}, {"(", "expr", ")"}}}
-};
-*/
 map<string, vector<vector<string>>> GRAMMAR = {
     {"program", {{"include_stmt", "namespace_stmt", "main_func"}}},
     {"include_stmt", {{"#include", "<", "identifier", ">"}}},
@@ -72,8 +43,6 @@ map<string, vector<vector<string>>> GRAMMAR = {
 bool is_terminal(const string& symbol) {
     return !GRAMMAR.count(symbol);
 }
-
-// Compute FIRST sets
 set<string> compute_first(map<string, set<string>>& first, const string &symbol) {
     if (is_terminal(symbol)) {
         return {symbol};
@@ -189,7 +158,6 @@ map<string, map<string, vector<string>>> create_parse_table(map<string, set<stri
 }
 
 
-// Parsing function using the parse table
 vector<pair<string, vector<string>>> parse(vector<pair<string, pair<string, string>>>& tokens, map<string, map<string, vector<string>>>& parse_table) {
     stack<string> parse_stack;
     parse_stack.push("program");
